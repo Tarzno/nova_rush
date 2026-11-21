@@ -211,8 +211,8 @@ macOS 13 should work but have not been tried.
 
 ### Download
 
-Get the disk image from the [Releases](../../releases/latest) page, open it
-and drag **Nova Rush** onto the Applications folder.
+Get `Nova-Rush-1.0-macos-arm64.dmg` from the [Releases](../../releases/latest)
+page, open it and drag **Nova Rush** onto the Applications folder.
 
 The app is not notarized by Apple, so macOS blocks a downloaded copy the first
 time you open it. Either allow it under **System Settings → Privacy & Security
@@ -231,6 +231,7 @@ other dependencies.
 cd Nova_Rush                  # your clone of this repository
 Scripts/build-app.sh          # → dist/Nova Rush.app
 open "dist/Nova Rush.app"
+Scripts/build-dmg.sh          # → dist/Nova-Rush-<version>-macos-arm64.dmg (builds the app first)
 ```
 
 For a quick try without building a bundle, `swift run` starts the game directly.
@@ -289,8 +290,9 @@ Sources/NovaRush/
   KeyLabels.swift        key names for the current keyboard layout
   main.swift             app, menus and the verification flags
   Resources/             music, voices, sound effects, backdrop
-Scripts/build-app.sh     builds dist/Nova Rush.app
-Tools/                   sound synthesizer, voice and effect preparation, app icon, README pictures
+Scripts/                 build scripts for the app and the disk image
+Tools/                   sound synthesizer, voice and effect preparation, app icon,
+                         disk image backdrop, README pictures
 Support/                 Info.plist and the app icon
 docs/                    the original table design
 Images/                  pictures for this README

@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nova Rush — Pinball Table Design</title>
+<style>
+  /* Committed single-theme design: a neon backglass world. */
+  :root {
+    color-scheme: dark;
+    --bg: #060913;
+    --panel: #0d1226;
+    --panel-2: #111737;
+    --line: #232b52;
+    --ink: #cdd6f2;
+    --ink-dim: #8b94ba;
+    --magenta: #ff3ea5;
+    --cyan: #35e2ff;
+    --amber: #ffb84d;
+    --steel: #c8d2e8;
+    --display: "Avenir Next Condensed", "HelveticaNeue-CondensedBold", "Arial Narrow", ui-sans-serif, sans-serif;
+    --body: "Avenir Next", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0;
+    font-family: var(--body);
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 500px at 50% -100px, #131b3f 0%, transparent 70%),
+      var(--bg);
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 56px 28px 80px; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--cyan);
+  }
+  header h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(44px, 7vw, 72px);
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    margin: 10px 0 8px;
+    color: #fff;
+    text-wrap: balance;
+  }
+  header h1 .nova {
+    background: linear-gradient(100deg, var(--magenta), var(--amber));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  header p.lede { max-width: 62ch; color: var(--ink-dim); margin: 0; }
+  header p.lede strong { color: var(--ink); font-weight: 600; }
+
+  .board-grid {
+    display: grid;
+    grid-template-columns: minmax(320px, 430px) 1fr;
+    gap: 44px;
+    align-items: start;
+    margin-top: 48px;
+  }
+  @media (max-width: 820px) { .board-grid { grid-template-columns: 1fr; } }
+
+  .board {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .board svg { display: block; width: 100%; height: auto; }
+  .board figcaption {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--ink-dim);
+    letter-spacing: 0.06em;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #fff;
+    margin: 0 0 14px;
+  }
+  section { margin-top: 56px; }
+  section > .eyebrow { display: block; margin-bottom: 4px; }
+
+  ol.legend { list-style: none; margin: 0; padding: 0; counter-reset: n; }
+  ol.legend li {
+    counter-increment: n;
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  ol.legend li:last-child { border-bottom: none; }
+  ol.legend li::before {
+    content: counter(n);
+    font-family: var(--mono);
+    font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px; margin-top: 2px;
+    border-radius: 50%;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+  }
+  ol.legend b { color: #fff; font-weight: 600; }
+  ol.legend span { color: var(--ink-dim); }
+
+  .ladder { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+  .ladder .step {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .ladder .k {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--magenta);
+  }
+  .ladder h3 { font-family: var(--display); font-size: 19px; text-transform: uppercase; letter-spacing: 0.04em; color: #fff; margin: 6px 0 6px; }
+  .ladder p { margin: 0; font-size: 14px; color: var(--ink-dim); }
+
+  table.spec {
+    width: 100%; border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+  table.spec td, table.spec th {
+    text-align: left; padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14.5px;
+  }
+  table.spec th { color: var(--ink-dim); font-weight: 500; width: 38%; }
+  table.spec td { font-family: var(--mono); font-size: 13.5px; color: var(--steel); }
+  .spec-wrap { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+
+  .verdict {
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--amber);
+    background: var(--panel-2);
+    border-radius: 10px;
+    padding: 18px 22px;
+    max-width: 74ch;
+  }
+  .verdict b { color: var(--amber); }
+  .phases { margin: 18px 0 0; padding-left: 0; list-style: none; counter-reset: p; max-width: 74ch; }
+  .phases li { counter-increment: p; display: grid; grid-template-columns: 30px 1fr; gap: 12px; padding: 8px 0; }
+  .phases li::before {
+    content: counter(p);
+    font-family: var(--mono); font-size: 12px; color: var(--magenta);
+    width: 24px; height: 24px; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--magenta); border-radius: 50%;
+  }
+  .phases b { color: #fff; font-weight: 600; }
+  .phases span { color: var(--ink-dim); }
+
+  footer { margin-top: 64px; font-family: var(--mono); font-size: 11.5px; color: var(--ink-dim); letter-spacing: 0.08em; }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Table design proposal · macOS pinball project</span>
+    <h1><span class="nova">Nova Rush</span></h1>
+    <p class="lede">A single-playfield, space-themed table in the classic <strong>20.25″ × 42″</strong> Williams
+    proportions: two-flipper Italian bottom, a three-bumper nest, one full-length return ramp, two target banks,
+    an orbit with spinner, and a mode/lock saucer. Every feature below maps to a physics body and a rule in code.</p>
+  </header>
+
+  <div class="board-grid">
+    <figure class="board" style="margin:0">
+      <svg viewBox="0 0 440 880" role="img" aria-label="Schematic top view of the Nova Rush playfield">
+        <defs>
+          <linearGradient id="pf" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#1a2352"/>
+            <stop offset="1" stop-color="#0c1130"/>
+          </linearGradient>
+          <radialGradient id="ballg" cx="0.35" cy="0.3" r="1">
+            <stop offset="0" stop-color="#ffffff"/>
+            <stop offset="0.45" stop-color="#aeb9cf"/>
+            <stop offset="1" stop-color="#4a5468"/>
+          </radialGradient>
+          <radialGradient id="bump" cx="0.5" cy="0.4" r="0.9">
+            <stop offset="0" stop-color="#ff9ecf"/>
+            <stop offset="0.55" stop-color="#ff3ea5"/>
+            <stop offset="1" stop-color="#8f1f63"/>
+          </radialGradient>
+        </defs>
+
+        <!-- cabinet + playfield -->
+        <path d="M 16,864 L 16,228 Q 16,16 220,16 Q 424,16 424,228 L 424,864 Z" fill="#2a3158"/>
+        <path d="M 24,856 L 24,230 Q 24,24 220,24 Q 416,24 416,230 L 416,856 Z" fill="url(#pf)"/>
+
+        <!-- starfield -->
+        <g fill="#ffffff" opacity="0.5">
+          <circle cx="70" cy="330" r="1.2"/><circle cx="210" cy="150" r="1"/><circle cx="330" cy="210" r="1.3"/>
+          <circle cx="120" cy="560" r="1"/><circle cx="290" cy="560" r="1.2"/><circle cx="180" cy="420" r="1"/>
+          <circle cx="250" cy="640" r="1.1"/><circle cx="60" cy="470" r="1"/><circle cx="350" cy="360" r="1"/>
+          <circle cx="150" cy="640" r="0.9"/><circle cx="230" cy="90" r="1"/><circle cx="310" cy="120" r="0.9"/>
+        </g>
+
+        <!-- shooter lane -->
+        <line x1="388" y1="856" x2="388" y2="300" stroke="#3a4373" stroke-width="4"/>
+        <path d="M 388,300 Q 388,268 372,244" fill="none" stroke="#3a4373" stroke-width="4" stroke-dasharray="5 6"/>
+        <circle cx="402" cy="838" r="9" fill="none" stroke="#8b94ba" stroke-width="2"/>
+        <rect x="398" y="848" width="8" height="14" rx="2" fill="#8b94ba"/>
+
+        <!-- orbit guide -->
+        <path d="M 52,612 L 52,240 Q 52,52 220,52 Q 322,52 366,142" fill="none" stroke="#35e2ff" stroke-width="3" opacity="0.55"/>
+
+        <!-- NOVA rollover lanes -->
+        <g stroke="#35e2ff" stroke-width="4" stroke-linecap="round" opacity="0.9">
+          <line x1="150" y1="64" x2="150" y2="112"/>
+          <line x1="185" y1="60" x2="185" y2="112"/>
+          <line x1="220" y1="58" x2="220" y2="112"/>
+          <line x1="255" y1="60" x2="255" y2="112"/>
+          <line x1="290" y1="64" x2="290" y2="112"/>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" font-size="14" fill="#ffb84d" text-anchor="middle" font-weight="bold">
+          <text x="167" y="102">N</text><text x="202" y="102">O</text><text x="237" y="102">V</text><text x="272" y="102">A</text>
+        </g>
+
+        <!-- saucer -->
+        <circle cx="90" cy="190" r="17" fill="#0a0e22" stroke="#ffb84d" stroke-width="2.5"/>
+        <circle cx="90" cy="190" r="8" fill="#1d2650"/>
+        <text x="90" y="160" font-family="ui-monospace, Menlo, monospace" font-size="10" fill="#ffb84d" text-anchor="middle" letter-spacing="2">LOCK</text>
+
+        <!-- ramp (elevated, translucent) -->
+        <path d="M 305,450 C 330,370 325,300 285,245 C 245,190 160,175 120,235 C 98,272 96,380 99,500 C 102,590 106,640 112,668"
+              fill="none" stroke="#ffb84d" stroke-width="18" opacity="0.22" stroke-linecap="round"/>
+        <path d="M 305,450 C 330,370 325,300 285,245 C 245,190 160,175 120,235 C 98,272 96,380 99,500 C 102,590 106,640 112,668"
+              fill="none" stroke="#ffb84d" stroke-width="2" opacity="0.85" stroke-dasharray="8 7"/>
+        <path d="M 296,458 L 305,450 L 314,458" fill="none" stroke="#ffb84d" stroke-width="3" stroke-linecap="round"/>
+
+        <!-- pop bumper nest -->
+        <g>
+          <circle cx="150" cy="252" r="24" fill="url(#bump)"/>
+          <circle cx="260" cy="252" r="24" fill="url(#bump)"/>
+          <circle cx="205" cy="302" r="24" fill="url(#bump)"/>
+          <g fill="none" stroke="#ffd7ec" stroke-width="2" opacity="0.9">
+            <circle cx="150" cy="252" r="14"/><circle cx="260" cy="252" r="14"/><circle cx="205" cy="302" r="14"/>
+          </g>
+        </g>
+
+        <!-- drop targets -->
+        <g fill="#35e2ff">
+          <rect x="86" y="462" width="24" height="9" rx="2" transform="rotate(24 98 466)"/>
+          <rect x="116" y="476" width="24" height="9" rx="2" transform="rotate(24 128 480)"/>
+          <rect x="146" y="490" width="24" height="9" rx="2" transform="rotate(24 158 494)"/>
+        </g>
+
+        <!-- standup targets -->
+        <g fill="#ff3ea5">
+          <rect x="346" y="452" width="9" height="24" rx="2"/>
+          <rect x="346" y="488" width="9" height="24" rx="2"/>
+          <rect x="346" y="524" width="9" height="24" rx="2"/>
+        </g>
+
+        <!-- spinner -->
+        <rect x="28" y="556" width="22" height="5" rx="2" fill="#35e2ff"/>
+        <path d="M 30,548 Q 39,542 48,548 M 30,568 Q 39,574 48,568" fill="none" stroke="#35e2ff" stroke-width="1.5" opacity="0.6"/>
+
+        <!-- outlane / inlane guides -->
+        <path d="M 62,628 L 62,712 Q 62,740 84,754" fill="none" stroke="#3a4373" stroke-width="4"/>
+        <path d="M 96,628 L 96,708 Q 96,736 116,748" fill="none" stroke="#3a4373" stroke-width="4"/>
+        <path d="M 352,628 L 352,712 Q 352,740 330,754" fill="none" stroke="#3a4373" stroke-width="4"/>
+        <path d="M 320,628 L 320,708 Q 320,736 300,748" fill="none" stroke="#3a4373" stroke-width="4"/>
+
+        <!-- slingshots -->
+        <path d="M 130,686 L 162,746 L 122,738 Z" fill="#1d2650" stroke="#ff3ea5" stroke-width="2.5"/>
+        <path d="M 310,686 L 278,746 L 318,738 Z" fill="#1d2650" stroke="#ff3ea5" stroke-width="2.5"/>
+
+        <!-- return-lane arrow inserts -->
+        <g fill="#ffb84d" opacity="0.85">
+          <path d="M 79,676 L 85,688 L 73,688 Z"/>
+          <path d="M 335,676 L 341,688 L 329,688 Z"/>
+        </g>
+
+        <!-- flippers -->
+        <g>
+          <rect x="156" y="775" width="62" height="15" rx="7.5" fill="#ffb84d" transform="rotate(26 158 782)"/>
+          <circle cx="158" cy="782" r="7" fill="#2a3158" stroke="#ffb84d" stroke-width="2"/>
+          <rect x="222" y="775" width="62" height="15" rx="7.5" fill="#ffb84d" transform="rotate(-26 282 782)"/>
+          <circle cx="282" cy="782" r="7" fill="#2a3158" stroke="#ffb84d" stroke-width="2"/>
+        </g>
+
+        <!-- drain -->
+        <rect x="198" y="846" width="44" height="10" rx="4" fill="#04060f"/>
+
+        <!-- balls -->
+        <circle cx="330" cy="730" r="10.5" fill="url(#ballg)"/>
+        <circle cx="248" cy="196" r="10.5" fill="url(#ballg)" opacity="0.95"/>
+
+        <!-- callout badges -->
+        <g font-family="ui-monospace, Menlo, monospace" font-size="11" text-anchor="middle">
+          <g><circle cx="402" cy="640" r="9" fill="#060913" stroke="#35e2ff"/><text x="402" y="644" fill="#35e2ff">1</text></g>
+          <g><circle cx="128" cy="84" r="9" fill="#060913" stroke="#35e2ff"/><text x="128" y="88" fill="#35e2ff">2</text></g>
+          <g><circle cx="205" cy="252" r="9" fill="#060913" stroke="#35e2ff"/><text x="205" y="256" fill="#35e2ff">3</text></g>
+          <g><circle cx="90" cy="226" r="9" fill="#060913" stroke="#35e2ff"/><text x="90" y="230" fill="#35e2ff">4</text></g>
+          <g><circle cx="38" cy="520" r="9" fill="#060913" stroke="#35e2ff"/><text x="38" y="524" fill="#35e2ff">5</text></g>
+          <g><circle cx="298" cy="482" r="9" fill="#060913" stroke="#35e2ff"/><text x="298" y="486" fill="#35e2ff">6</text></g>
+          <g><circle cx="76" cy="440" r="9" fill="#060913" stroke="#35e2ff"/><text x="76" y="444" fill="#35e2ff">7</text></g>
+          <g><circle cx="372" cy="490" r="9" fill="#060913" stroke="#35e2ff"/><text x="372" y="494" fill="#35e2ff">8</text></g>
+          <g><circle cx="140" cy="716" r="9" fill="#060913" stroke="#35e2ff"/><text x="140" y="720" fill="#35e2ff">9</text></g>
+          <g><circle cx="79" cy="606" r="9" fill="#060913" stroke="#35e2ff"/><text x="79" y="610" fill="#35e2ff">10</text></g>
+          <g><circle cx="312" cy="806" r="9" fill="#060913" stroke="#35e2ff"/><text x="312" y="810" fill="#35e2ff">11</text></g>
+          <g><circle cx="220" cy="826" r="9" fill="#060913" stroke="#35e2ff"/><text x="220" y="830" fill="#35e2ff">12</text></g>
+        </g>
+      </svg>
+      <figcaption>Top view · 20.25″ × 42″ playfield · 6.5° pitch · schematic, not to final art</figcaption>
+    </figure>
+
+    <div>
+      <h2>Feature key</h2>
+      <ol class="legend">
+        <li><div><b>Shooter lane &amp; skill shot</b> — <span>plunge strength picks a lit NOVA lane; soft plunge scores the skill shot.</span></div></li>
+        <li><div><b>NOVA rollover lanes</b> — <span>four lanes; complete N-O-V-A to advance the bonus multiplier. Lit lanes rotate with flipper buttons (lane change).</span></div></li>
+        <li><div><b>Pop bumper nest</b> — <span>three bumpers; each hit kicks the ball outward, scores, and builds the Nova value.</span></div></li>
+        <li><div><b>Nebula saucer</b> — <span>kickout hole. Starts modes when lit; locks balls for multiball.</span></div></li>
+        <li><div><b>Left orbit &amp; spinner</b> — <span>full loop to the top lanes; the spinner rips points on the way through.</span></div></li>
+        <li><div><b>Comet ramp</b> — <span>the marquee shot: right-side entrance climbing over the bumper nest and returning to the left inlane. Repeatable combo shot; jackpots live here.</span></div></li>
+        <li><div><b>Drop-target bank</b> — <span>three drop targets; clearing the bank lights the saucer for mode start.</span></div></li>
+        <li><div><b>Star standups</b> — <span>three standup targets; each hit charges the jackpot value.</span></div></li>
+        <li><div><b>Slingshots</b> — <span>kicker triangles above the flippers that fling the ball sideways — the classic source of chaos.</span></div></li>
+        <li><div><b>Inlanes / outlanes</b> — <span>inlanes feed the flippers and light ramp combos; outlanes drain (nudging matters here).</span></div></li>
+        <li><div><b>Flippers</b> — <span>standard two-flipper Italian bottom; full stroke in ~120 ms, momentum transfers to the ball.</span></div></li>
+        <li><div><b>Drain &amp; ball saver</b> — <span>center drain; a timed ball saver returns quick losses to play.</span></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <section>
+    <span class="eyebrow">Ruleset</span>
+    <h2>How a game plays</h2>
+    <div class="ladder">
+      <div class="step"><span class="k">Launch</span><h3>Skill shot</h3><p>Soft plunge into the lit NOVA lane: 500K and instant bonus ×2.</p></div>
+      <div class="step"><span class="k">Build</span><h3>Nova modes</h3><p>Clear the drop bank to light the saucer. Three timed modes: Asteroid Storm, Solar Flare, Gravity Well.</p></div>
+      <div class="step"><span class="k">Cash in</span><h3>Multiball</h3><p>Lock two balls in the saucer; 3-ball multiball with 250K ramp jackpots, super jackpot 1M.</p></div>
+      <div class="step"><span class="k">Multiply</span><h3>NOVA bonus</h3><p>Lane completions raise the end-of-ball bonus multiplier up to ×8.</p></div>
+      <div class="step"><span class="k">Finale</span><h3>Supernova</h3><p>Finish all three modes to reach the wizard mode: everything lit, everything scores.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Simulation targets</span>
+    <h2>Physics spec (from real machines)</h2>
+    <div class="spec-wrap">
+      <table class="spec">
+        <tr><th>Playfield</th><td>20.25 × 42 in — 1 : 2.07 aspect, rendered ~460 × 954 pt</td></tr>
+        <tr><th>Pitch</th><td>6.5° — effective downfield gravity g·sin 6.5° ≈ 1.11 m/s²</td></tr>
+        <tr><th>Ball</th><td>Ø 1-1/16 in (27 mm) steel, ~80 g, low rolling friction on slick playfield</td></tr>
+        <tr><th>Flipper</th><td>~120 ms full stroke, ~48° sweep; kinematic body, momentum transferred at contact</td></tr>
+        <tr><th>Integration</th><td>60 Hz frame, physics substepped; continuous collision detection on the ball (anti-tunneling)</td></tr>
+        <tr><th>Kickers</th><td>Slingshots / bumpers modeled as impulse emitters triggered by contact, not springs</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Assessment</span>
+    <h2>Feasibility &amp; build order</h2>
+    <div class="verdict">
+      <b>Verdict: realistic.</b> Swift + SpriteKit gives us a Metal-rendered 2D scene graph with a built-in
+      Box2D-style physics engine, particle emitters, and positional audio — every feature on this table maps
+      directly to a SpriteKit primitive, and the toolchain on this machine builds a signed macOS .app today.
+      The one genuinely hard part is flipper feel; that is tuning time, not risk.
+    </div>
+    <ol class="phases">
+      <li><div><b>Rolling steel</b> — <span>table geometry, gravity, ball, flippers, plunger; playable skeleton.</span></div></li>
+      <li><div><b>Kickers &amp; score</b> — <span>bumpers, slingshots, targets, spinner, scoring, HUD.</span></div></li>
+      <li><div><b>The Comet ramp</b> — <span>elevated-layer trick, orbit, lanes, saucer, modes and multiball.</span></div></li>
+      <li><div><b>Light &amp; sound</b> — <span>particles, lamp shows, DMD-style display, full sound package, nudge/tilt.</span></div></li>
+      <li><div><b>Ship it</b> — <span>attract mode, high scores, app icon, .app bundle.</span></div></li>
+    </ol>
+  </section>
+
+  <footer>NOVA RUSH · TABLE DESIGN v1 · 2026-07-12 · TARGET: MACOS (SPRITEKIT)</footer>
+</div>
+</html>

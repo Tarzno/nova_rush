@@ -1,0 +1,28 @@
+# Root-level entries are anchored with a leading "/": git on macOS ignores
+# case, so an unanchored "music/" would also match
+# Sources/NovaRush/Resources/Music/ and drop the game's soundtrack.
+
+# Build output
+/.build/
+/dist/
+/.swiftpm/
+*.xcodeproj/
+xcuserdata/
+
+# macOS
+.DS_Store
+
+# Local working notes and AI-assistant state (contain local paths,
+# session IDs and private notes)
+/CLAUDE.md
+/.claude/
+/SESSION_NOTES.txt
+
+# Local generation tools and their output (not part of the game)
+/comfyui_workflows/
+/kokoro-tts/
+/generated/
+
+# Source tracks of the music — the game ships its own AAC copies in
+# Sources/NovaRush/Resources/Music/, so these would only duplicate them.
+/music/

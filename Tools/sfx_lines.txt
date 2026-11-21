@@ -1,0 +1,33 @@
+# Generated sound effects — Stable Audio 3 medium via ComfyUI (local),
+# graph Tools/comfy/stableaudio3_sfx_api.json (prompt node 6, seconds node 11,
+# seed node 3, batch 4 = four takes per run). Outputs (in ComfyUI's output
+# folder): NovaRush/sfx_<name>_0000N.flac
+# Prepared with: swift Tools/sfxprep.swift <name>=<flac>@<maxSec>@<peakDB>@<loudDB>
+#
+# name     seed take  prep          prompt
+# flipper  501  #3    0.2s -1 -15   Pinball machine flipper: a single sharp mechanical clack of a solenoid coil snapping a plastic flipper bat up, short punchy thud, dry, close-miked, one-shot, no music (1 s)
+# bumper   HYBRID — the first try (seed 502 #1) was too tinny/rattly (no bass, noisy).
+#          Now: thump (seed 814 #3, "A single deep soft bass thump, like a padded mallet hitting
+#          a wooden box, short, clean, no ringing, no rattle, one-shot sound effect, no music")
+#          layered over the synthesized pling (Sounds/bumper.wav, -3 dB) with
+#          `swift Tools/sfxmix.swift <out> <thump>@0 Sources/NovaRush/Resources/Sounds/bumper.wav@-3`,
+#          then sfxprep @0.4@-1@-10.5. Alternatives were kept in the ComfyUI output folder (NovaRush/bumper_candidates/).
+#          Screen bumper takes with `swift Tools/sfxcheck.swift` (want bass high, flatness ≈ 0).
+# drain    503  #3    1.4s -1 -8.5  A steel pinball rolling down a metal channel and dropping into a hole with a hollow clunk, followed by a short descending sci-fi power-down tone, sound effect, no music (2 s)
+# launch   504  #3    0.6s -1 -12   Pinball plunger launch: a metallic spring twang releasing and a steel ball shooting up a metal lane with a fast rising whoosh, sound effect, one-shot, no music (1.5 s)
+# eject    505  #4    0.5s -1 -14   Pinball kickout hole eject: a sharp solenoid kick firing a steel ball out of a metal saucer, hard clunk with a short pneumatic hiss, sound effect, one-shot, no music (1 s)
+#
+# Takes were pre-selected by envelope (fast onset for hits, long tail for
+# drain/launch); the other three takes of each are alternatives. loudDB
+# matches the synthesized originals' loudest-100 ms RMS (~2 dB under).
+
+# New effects (no synthesized original; wired in GameScene):
+# wormhole 901  #1    0.75s -1 -12  (Wormhole capture, replaces the borrowed saucer sound)
+#          Sci-fi wormhole swallowing an object: a deep swirling whoosh that is sucked inward and down, airy vortex with a low sub-bass rumble, ending in a soft muffled implosion, smooth, no music, one-shot sound effect (1.5 s)
+# warp     902  #3    1.0s -1 -13   (plays 0.25 s into a warp's 1 s transit, panned to the exit hole)
+#          Sci-fi teleport warp sweep: a smooth rising synthesizer whoosh with shimmering phaser, travelling fast through hyperspace, ending in a bright airy chime, clean, no music, one-shot sound effect (1.5 s)
+# ramp     903  #4    1.6s -1 -16   (ramp entry; volume scales with entry speed)
+#          A steel ball rolling fast along a metal wire ramp: a smooth metallic rolling whir with a subtle rising electric hum, continuous, no impacts, no music, sound effect (2 s)
+# Picks: wormhole #1 builds then ends (#3 = pure sub-bass); warp #3 rises, clean,
+# ~1 kHz (#1/#4 much brighter — avoided after the "tinny" bumper); ramp #4 starts
+# earliest and is darkest/least noisy.

@@ -26,6 +26,7 @@ struct AboutView: View {
                 Text("Initial implementation: Anthropic Claude Fable 5")
                 Text("Refinement: Anthropic Claude Opus 5.5")
                 Text("Music: Stable Audio 3; Backdrop: Z Image Turbo; Voices: Kokoro TTS")
+                Text("Music and sound effects: Powered by Stability AI")
             }
             .font(.system(size: 14))
             .multilineTextAlignment(.center)

@@ -32,7 +32,8 @@ enum License {
     /// LICENSE-ASSETS.
     static let assetsNote = "The MIT License above covers the source code. The music, the backdrop "
         + "artwork, the generated sound effects and the voice callouts are licensed "
-        + "separately under Creative Commons Attribution-NonCommercial 4.0 (CC BY-NC 4.0): "
+        + "separately, to the extent they are protected by copyright, under Creative "
+        + "Commons Attribution-NonCommercial 4.0 (CC BY-NC 4.0): "
         + "you may share and adapt them for non-commercial purposes, with credit. "
         + "Recording and streaming gameplay — including monetized videos — is explicitly "
         + "allowed. See LICENSE-ASSETS for details."

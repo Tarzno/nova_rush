@@ -3,9 +3,9 @@ Nova Rush — Assets License
 Copyright (c) 2026 Hanno Teeling
 
 The source code of Nova Rush is licensed under the MIT License (see LICENSE).
-The media assets listed below are NOT covered by the MIT License. They are
-licensed under the Creative Commons Attribution-NonCommercial 4.0
-International License (CC BY-NC 4.0):
+The media assets listed below are NOT covered by the MIT License. To the
+extent they are protected by copyright, they are licensed under the Creative
+Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0):
 
     https://creativecommons.org/licenses/by-nc/4.0/
     Full legal text: https://creativecommons.org/licenses/by-nc/4.0/legalcode
@@ -44,3 +44,10 @@ How the assets were made
                  synthesized tone)
   Voices         Kokoro TTS (Kokoro-82M, Apache-2.0), voices af_heart and
                  af_heart/af_nicole blend
+
+Music and sound effects: Powered by Stability AI.
+
+These assets were made with generative AI tools. Material generated without
+enough human creative input may not be protected by copyright in every
+jurisdiction; the license above applies only as far as such protection
+exists.

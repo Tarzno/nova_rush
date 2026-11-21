@@ -17,6 +17,14 @@ rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp Support/Info.plist "$APP/Contents/"
 cp .build/release/NovaRush "$APP/Contents/MacOS/"
+# Release builds embed absolute build paths (user name, folders) in their
+# debug map; strip it and refuse to ship a binary that still names $HOME.
+# (Plain `strings` does not show them — they sit outside __TEXT.)
+strip -S "$APP/Contents/MacOS/NovaRush"
+if LC_ALL=C grep -q "$HOME" "$APP/Contents/MacOS/NovaRush"; then
+    echo "error: the app binary still contains paths under $HOME" >&2
+    exit 1
+fi
 if [ -d .build/release/NovaRush_NovaRush.bundle ]; then
     cp -R .build/release/NovaRush_NovaRush.bundle "$APP/Contents/Resources/"
 fi
